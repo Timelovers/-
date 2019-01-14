@@ -1,32 +1,105 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+#include<iostream>
+using namespace std;
+template<class ElemType> 
+class MinHeap
+{
+public:
+	int maxsize;
+	int currentsize;
+	ElemType *heapArr;
+	MinHeap (int max);
+	MinHeap (int max,int current, ElemType a[]);
+	~MinHeap();
+	void FillerDown(int start);
+	void printf();
+};
+	
+template<class ElemType >
+	MinHeap<ElemType>::	MinHeap( int max)
+		{
+			maxsize=max;
+			heapArr=new ElemType[maxsize];
+			currentsize=0;
+		}
+template<class ElemType>
+	 MinHeap<ElemType>::MinHeap(int max,int current,ElemType a[])
+		{
+			maxsize=max;
+			if(current<0)
+			{
+				cout<<"堆的大小不能小于1"<<endl;
+			}
+			else
+			{
+				currentsize=current;
+				heapArr=new ElemType[maxsize];
+				for(int i=0;i<current;i++)
+				{
+					heapArr[i]=a[i];
+					cout<<heapArr[i]<<" ";
+				}
+				cout<<endl;
+				int i=(currentsize-2)/2;
+				while(i>=0)
+				{
+				FillerDown(i);
+				i--;
+				}
+				for(int i=0;i<current;i++)
+				cout<<heapArr[i]<<" ";
+				cout<<endl;
+				
+				
+			}
+		}
+template <class ElemType>
+void MinHeap<ElemType>::FillerDown(const int start)
+{
+	int i=start,j;
+	ElemType temp=heapArr[i];//最小的一个根
+    j=2*i+1;//左孩子
+	while(j<currentsize)//1.寻找的深度是最后一个
+	{
+		
+		if(j<currentsize&&heapArr[j]>heapArr[j+1])
+			j++;//找孩子中最小的那个。
+		if(temp<=heapArr[j])//2.跳出
+			break;
+		else
+		{
+			heapArr[i]=heapArr[j];
+			i=j;
+			j=2*j+1;
+		}
+	}
+	heapArr[i]=temp;
+}
+template<class ElemType>
+	MinHeap<ElemType>::~MinHeap()
+{
+    delete 	[] heapArr;
+	}
+template<class ElemType>
+void	MinHeap<ElemType>::printf()
+	{
+		for(int i=0;i<currentsize;i++)
+			cout<<heapArr[i]<<" ";
+		cout<<endl;
+		
+	}
+	
+int main()
+{
+	int a[10]={80,57,99,35,23,11,74,29,62,16};
+	for(int i=0;i<10;i++)
+		cout<<a[i]<< " ";
+	cout<<endl;
+	MinHeap<int > h(20,10,a);
+	for(int i=0;i<10;i++)
+	{
+		cout<<h.heapArr[i]<<" ";
+	}
+	cout<<endl;
+	h.printf();
+}
+	
